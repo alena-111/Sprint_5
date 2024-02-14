@@ -5,11 +5,11 @@ import utils
 
 
 def test_personal_account(driver):
-    driver.get(locators.Url.login_url)
+    driver.get(locators.Url.BASE_URL + locators.Url.LOGIN_URL)
     # login
     utils.login_to_account(driver)
 
     driver.find_element(By.XPATH,
-                        locators.Button.button_personal_account).click()
+                        locators.Button.BUTTON_PERSONAL_ACCOUNT).click()
     assert driver.find_element(By.XPATH,
-                               locators.Links.button_profile).is_displayed()
+                               locators.Links.BUTTON_PROFILE).is_displayed()

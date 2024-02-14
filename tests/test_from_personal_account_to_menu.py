@@ -1,29 +1,40 @@
-import pytest
 from selenium.webdriver.common.by import By
 
 import locators
 import utils
 
 
-@pytest.mark.parametrize('links', [locators.Links.constructor_link, 'svg'],
-                         ids=['constructor', 'burger svg'])
-def test_personal_account(driver, links):
-    driver.get(locators.Url.login_url)
+def test_personal_account_constructor(driver):
+    driver.get(locators.Url.BASE_URL + locators.Url.LOGIN_URL)
     # login
     utils.login_to_account(driver)
     driver.find_element(By.XPATH,
-                        locators.Button.button_create_order).is_displayed()
+                        locators.Button.BUTTON_CREATE_ORDER).is_displayed()
 
     driver.find_element(By.XPATH,
-                        locators.Button.button_personal_account).click()
+                        locators.Button.BUTTON_PERSONAL_ACCOUNT).click()
 
-    if links == 'svg':
-        for element in driver.find_elements(By.TAG_NAME, links):
-            if element.get_attribute('xmlns') == 'http://www.w3.org/2000/svg':
-                element.click()
-                break
-    else:
-        driver.find_element(By.XPATH, links).click()
+    driver.find_element(By.XPATH, locators.Links.CONSTRUCTOR_LINK).click()
 
     assert driver.find_element(By.XPATH,
-                               locators.Button.button_create_order).is_displayed()
+                               locators.Button.BUTTON_CREATE_ORDER).is_displayed()
+
+
+def test_personal_account_burger(driver):
+    driver.get(locators.Url.BASE_URL + locators.Url.LOGIN_URL)
+    # login
+    utils.login_to_account(driver)
+    driver.find_element(By.XPATH,
+                        locators.Button.BUTTON_CREATE_ORDER).is_displayed()
+
+    driver.find_element(By.XPATH,
+                        locators.Button.BUTTON_PERSONAL_ACCOUNT).click()
+
+    for element in driver.find_elements(By.TAG_NAME, 'svg'):
+        if element.get_attribute(
+                'xmlns') == 'http://www.w3.org/2000/svg':
+            element.click()
+            break
+
+    assert driver.find_element(By.XPATH,
+                               locators.Button.BUTTON_CREATE_ORDER).is_displayed()
